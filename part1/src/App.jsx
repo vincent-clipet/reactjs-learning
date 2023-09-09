@@ -32,17 +32,31 @@ const App = () => {
     setVotes(votesCopy)
   }
 
+  const getBestAnecdoteIndex = () => {
+    let ret = 0
+    votes.forEach((element, index) => {
+      if (element > votes[ret])
+        ret = index
+    })
+    return ret
+  }
+  const bestAnecdoteIndex = getBestAnecdoteIndex()
+
   return (
     <>
-      <Anecdote text={anecdotes[selected]} votes={votes[selected]} />
+      <div>
+        <h1>Anecdote of the day</h1>
+        <Anecdote text={anecdotes[selected]} votes={votes[selected]} />
+        <button onClick={() => updateVotes()}>Vote</button>
+        <button onClick={() => setSelected(Math.floor(Math.random() * anecdotes.length))}>
+          Next anecdote
+        </button>
+      </div>
 
-      <button onClick={() => updateVotes()}>
-        Vote
-      </button>
-
-      <button onClick={() => setSelected(Math.floor(Math.random() * anecdotes.length))}>
-        Next anecdote
-      </button>
+      <div>
+        <h1>Anecdote with most votes</h1>
+        <Anecdote text={anecdotes[bestAnecdoteIndex]} votes={votes[bestAnecdoteIndex]} />
+      </div>
     </>
   )
 }
