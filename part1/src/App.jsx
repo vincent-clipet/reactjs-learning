@@ -13,12 +13,20 @@ const Statistic = ({name, value}) => {
   )
 }
 
+// const sum = (values) => values.reduce((acc, i) => acc + i, 0)
+const calcSum = (...args) => args.reduce((acc, i) => acc + i, 0)
+const calcAvgWeighted = (good, bad, sum) => (good - bad) / sum
+const calcPositivePercent = (good, sum) => good / sum * 100
 
 const App = () => {
   // save clicks of each button to its own state
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
+
+  const sum = calcSum(good, neutral, bad)
+  const avgWeighted = calcAvgWeighted(good, bad, sum)
+  const positivePercent = calcPositivePercent(good, sum)
 
   return (
     <div>
@@ -31,6 +39,9 @@ const App = () => {
       <Statistic name="good"    value={good} />
       <Statistic name="neutral" value={neutral} />
       <Statistic name="bad"     value={bad} />
+      <Statistic name="sum"               value={sum} />
+      <Statistic name="avgWeighted"       value={avgWeighted} />
+      <Statistic name="positivePercent"   value={positivePercent} />
     </div>
   )
 }
