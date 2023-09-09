@@ -9,7 +9,10 @@ const Button = ({ name, handler }) => {
 
 const StatisticLine = ({ name, value }) => {
   return (
-    <p>{name} {value}</p>
+    <tr>
+      <td>{name}</td>
+      <td>{value}</td>
+    </tr>
   )
 }
 
@@ -22,12 +25,16 @@ const Statistics = ({ good, neutral, bad }) => {
   if (sum !== 0) {
     return (
       <div>
-        <StatisticLine name="good" value={good} />
-        <StatisticLine name="neutral" value={neutral} />
-        <StatisticLine name="bad" value={bad} />
-        <StatisticLine name="sum" value={sum} />
-        <StatisticLine name="avgWeighted" value={avgWeighted} />
-        <StatisticLine name="positivePercent" value={positivePercent} />
+        <table>
+          <tbody>
+            <StatisticLine name="good" value={good} />
+            <StatisticLine name="neutral" value={neutral} />
+            <StatisticLine name="bad" value={bad} />
+            <StatisticLine name="sum" value={sum} />
+            <StatisticLine name="avgWeighted" value={avgWeighted} />
+            <StatisticLine name="positivePercent" value={positivePercent} />
+          </tbody>
+        </table>
       </div>
     )
   }
