@@ -24,9 +24,10 @@ const App = () => {
 
   const [selected, setSelected] = useState(0)
   const [votes, setVotes] = useState(Array(anecdotes.length).fill(0))
-  const votesCopy = [...votes]
 
-  const updateVotes = (selected, setVotes) => {
+
+  const updateVotes = () => {
+    const votesCopy = [...votes]
     votesCopy[selected] += 1
     setVotes(votesCopy)
   }
@@ -35,7 +36,7 @@ const App = () => {
     <>
       <Anecdote text={anecdotes[selected]} votes={votes[selected]} />
 
-      <button onClick={() => updateVotes(selected, setVotes)}>
+      <button onClick={() => updateVotes()}>
         Vote
       </button>
 
