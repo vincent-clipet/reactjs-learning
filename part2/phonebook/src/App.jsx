@@ -1,19 +1,34 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
+
+
 
 let idGenerator = 0
 
 const App = () => {
 
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', phone: '0123' },
-    { name: 'Azer Ty', phone: '4567' },
-    { name: 'Az Erty', phone: '8901' }
+    { name: 'Arto Hellas', number: '0123' },
+    { name: 'Azer Ty', number: '4567' },
+    { name: 'Az Erty', number: '8901' }
   ])
   const [newName, setNewName] = useState('')
-  const [newPhone, setNewPhone] = useState('')
+  const [newNumber, setNewNumber] = useState('')
   const [search, setSearch] = useState('')
 
 
+
+  const hook = () => {
+    console.log('effect')
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        console.log('promise fulfilled')
+        setPersons(response.data)
+      })
+  }
+  
+  useEffect(hook, [])
 
 
 
@@ -24,7 +39,7 @@ const App = () => {
   }
 
   const handleNewNameChange = (event) => setNewName(event.target.value)
-  const handleNewPhoneChange = (event) => setNewPhone(event.target.value)
+  const handleNewNumberChange = (event) => setNewNumber(event.target.value)
   const handleSearch = (event) => setSearch(event.target.value)
   const handleFormSubmit = (event) => {
     event.preventDefault()
@@ -34,10 +49,10 @@ const App = () => {
       alert(`${newName} is already added to phonebook`)
     }
     else {
-      const newPerson = { name: newName, phone: newPhone }
+      const newPerson = { name: newName, number: newNumber }
       setPersons(persons.concat(newPerson))
       setNewName("")
-      setNewPhone("")
+      setNewNumber("")
     }
   }
 
@@ -55,9 +70,9 @@ const App = () => {
       <h3>Add a new person</h3>
       <NewPersonForm
         newName={newName}
-        newPhone={newPhone}
+        newNumber={newNumber}
         handleNewNameChange={handleNewNameChange}
-        handleNewPhoneChange={handleNewPhoneChange}
+        handleNewNumberChange={handleNewNumberChange}
         handleFormSubmit={handleFormSubmit}
       />
 
@@ -78,11 +93,11 @@ const SearchFilter = ({ handleSearch, search }) => {
   )
 }
 
-const NewPersonForm = ({ newName, newPhone, handleNewNameChange, handleNewPhoneChange, handleFormSubmit }) => {
+const NewPersonForm = ({ newName, newNumber, handleNewNameChange, handleNewNumberChange, handleFormSubmit }) => {
   return (
     <form>
       <div>name:    <input onChange={handleNewNameChange} value={newName} />        </div>
-      <div>number:  <input onChange={handleNewPhoneChange} value={newPhone} />      </div>
+      <div>number:  <input onChange={handleNewNumberChange} value={newNumber} />      </div>
       <div>         <button type="submit" onClick={handleFormSubmit}>add</button>   </div>
     </form>
   )
@@ -92,15 +107,15 @@ const Persons = ({ personsToShow }) => {
   return (
     <ul>
       {personsToShow.map(person =>
-        <Person key={idGenerator++} name={person.name} phone={person.phone} />
+        <Person key={idGenerator++} name={person.name} number={person.number} />
       )}
     </ul>
   )
 }
 
-const Person = ({ name, phone }) => {
+const Person = ({ name, number }) => {
   return (
-    <li>{name} - {phone}</li>
+    <li>{name} - {number}</li>
   )
 }
 
