@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react'
 import personService from './services/persons'
+import Notification from './components/Notification'
 
 
-
-let idGenerator = 0
 
 const App = () => {
 
@@ -11,6 +10,8 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [search, setSearch] = useState('')
+  const [successMessage, setSuccessMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
 
 
@@ -50,6 +51,12 @@ const App = () => {
           setPersons(persons.concat(newPerson))
           setNewName("")
           setNewNumber("")
+          setSuccessMessage(
+            `Person '${newName}' was added.`
+          )
+          setTimeout(() => {
+            setSuccessMessage(null)
+          }, 5000)
         })
     }
   }
@@ -63,6 +70,14 @@ const App = () => {
           const cleanedPersons = persons.filter(person => person.id !== id)
           setPersons(cleanedPersons)
         })
+        .catch((error) => {
+          setErrorMessage(
+            `Problem encountered while deleting '${person.name}'`
+          )
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
+        })
     }
   }
 
@@ -70,6 +85,9 @@ const App = () => {
 
   return (
     <div>
+
+      <Notification message={successMessage} type='success' />
+      <Notification message={errorMessage} type='error' />
 
       <h2>Phonebook</h2>
       <SearchFilter
