@@ -13,3 +13,9 @@ npm install
 ```bash
 npm run dev
 ```
+
+### Start json-server
+```bash
+json-server --port 3001 --watch db.json
+npm run server
+```
