@@ -1,49 +1,52 @@
 import { useState } from 'react'
-import Note from './components/Note'
 
-const App = (props) => {
+const App = () => {
 
-  const [notes, setNotes] = useState(props.notes)
-  const [newNote, setNewNote] = useState("")
-  const [showAll, setShowAll] = useState(true)
+  let idGenerator = 0
+  const [persons, setPersons] = useState([
+    { name: 'Arto Hellas' },
+    { name: 'Azer Ty' }
+  ])
+  const [newName, setNewName] = useState('')
 
-  const addNote = (event) => {
+  const handleFormSubmit = (event) => {
     event.preventDefault()
-    const noteObject = {
-      content: newNote,
-      important: Math.random() < 0.5,
-      id: notes.length + 1,
+    const person = {
+      name: newName
     }
-  
-    setNotes(notes.concat(noteObject))
-    setNewNote('')
+    setPersons(persons.concat(person))
+    setNewName("")
   }
 
-  const handleNoteChange = (event) => {
-    console.log(event.target.value)
-    setNewNote(event.target.value)
+  const handleNewNameChange = (event) => {
+    setNewName(event.target.value)
   }
-
-  const notesToShow = showAll ? notes : notes.filter(note => note.important === true)
 
   return (
     <div>
-      <h1>Notes</h1>
-      <div>
-        <button onClick={() => setShowAll(!showAll)}>
-          show {showAll ? 'important' : 'all' }
-        </button>
-      </div>
+      <h2>Phonebook</h2>
+      <form>
+        <div>
+          name: <input onChange={handleNewNameChange} />
+        </div>
+        <div>debug: {newName}</div>
+        <div>
+          <button type="submit" onClick={handleFormSubmit}>add</button>
+        </div>
+      </form>
+      <h2>Numbers</h2>
       <ul>
-        {notesToShow.map(note => 
-          <Note key={note.id} note={note} />
+        {persons.map(person =>
+          <Person key={idGenerator++} name={person.name} />
         )}
       </ul>
-      <form onSubmit={addNote}>
-        <input value={newNote} onChange={handleNoteChange} />
-        <button type="submit">save</button>
-      </form>   
     </div>
+  )
+}
+
+const Person = ({ name }) => {
+  return (
+    <li>{name}</li>
   )
 }
 
