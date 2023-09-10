@@ -27,7 +27,7 @@ const App = () => {
         setPersons(response.data)
       })
   }
-  
+
   useEffect(hook, [])
 
 
@@ -41,6 +41,7 @@ const App = () => {
   const handleNewNameChange = (event) => setNewName(event.target.value)
   const handleNewNumberChange = (event) => setNewNumber(event.target.value)
   const handleSearch = (event) => setSearch(event.target.value)
+
   const handleFormSubmit = (event) => {
     event.preventDefault()
 
@@ -50,9 +51,13 @@ const App = () => {
     }
     else {
       const newPerson = { name: newName, number: newNumber }
-      setPersons(persons.concat(newPerson))
-      setNewName("")
-      setNewNumber("")
+      axios
+        .post("http://localhost:3001/persons", newPerson)
+        .then(response => {
+          setPersons(persons.concat(response.data))
+          setNewName("")
+          setNewNumber("")
+        })
     }
   }
 
