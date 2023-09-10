@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import personService from './services/persons'
 
 
 
@@ -7,11 +7,7 @@ let idGenerator = 0
 
 const App = () => {
 
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '0123' },
-    { name: 'Azer Ty', number: '4567' },
-    { name: 'Az Erty', number: '8901' }
-  ])
+  const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [search, setSearch] = useState('')
@@ -19,15 +15,12 @@ const App = () => {
 
 
   const hook = () => {
-    console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        console.log('promise fulfilled')
-        setPersons(response.data)
+    personService
+      .getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)
       })
   }
-
   useEffect(hook, [])
 
 
@@ -51,10 +44,10 @@ const App = () => {
     }
     else {
       const newPerson = { name: newName, number: newNumber }
-      axios
-        .post("http://localhost:3001/persons", newPerson)
-        .then(response => {
-          setPersons(persons.concat(response.data))
+      personService
+        .create(newPerson)
+        .then(newPerson => {
+          setPersons(persons.concat(newPerson))
           setNewName("")
           setNewNumber("")
         })
@@ -100,7 +93,7 @@ const SearchFilter = ({ handleSearch, search }) => {
 
 const NewPersonForm = ({ newName, newNumber, handleNewNameChange, handleNewNumberChange, handleFormSubmit }) => {
   return (
-    <form>
+    <form onSubmit={handleFormSubmit}>
       <div>name:    <input onChange={handleNewNameChange} value={newName} />        </div>
       <div>number:  <input onChange={handleNewNumberChange} value={newNumber} />      </div>
       <div>         <button type="submit" onClick={handleFormSubmit}>add</button>   </div>
