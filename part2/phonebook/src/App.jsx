@@ -54,6 +54,18 @@ const App = () => {
     }
   }
 
+  const handleDelete = (id) => {
+    const person = persons.find((element) => element.id == id)
+    if (window.confirm(`Are you sure you want to delete ${person.name} ?`)) {
+      personService
+        .del(id)
+        .then(() => {
+          const cleanedPersons = persons.filter(person => person.id !== id)
+          setPersons(cleanedPersons)
+        })
+    }
+  }
+
 
 
   return (
@@ -77,6 +89,7 @@ const App = () => {
       <h3>Numbers</h3>
       <Persons
         personsToShow={personsToShow}
+        handleDelete={handleDelete}
       />
 
     </div>
@@ -101,19 +114,28 @@ const NewPersonForm = ({ newName, newNumber, handleNewNameChange, handleNewNumbe
   )
 }
 
-const Persons = ({ personsToShow }) => {
+const Persons = ({ personsToShow, handleDelete }) => {
   return (
     <ul>
       {personsToShow.map(person =>
-        <Person key={idGenerator++} name={person.name} number={person.number} />
+        <Person
+          key={person.id}
+          id={person.id}
+          name={person.name}
+          number={person.number}
+          handleDelete={handleDelete}
+        />
       )}
     </ul>
   )
 }
 
-const Person = ({ name, number }) => {
+const Person = ({ name, number, id, handleDelete }) => {
   return (
-    <li>{name} - {number}</li>
+    <li>
+      <button value="X" onClick={() => handleDelete(id)}>Delete</button>
+      &nbsp; {name} - {number}
+    </li>
   )
 }
 
