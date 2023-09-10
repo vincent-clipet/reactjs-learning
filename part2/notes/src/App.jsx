@@ -20,11 +20,14 @@ const App = () => {
     const noteObject = {
       content: newNote,
       important: Math.random() > 0.5,
-      id: notes.length + 1,
     }
-  
-    setNotes(notes.concat(noteObject))
-    setNewNote('')
+
+    axios
+      .post('http://localhost:3001/notes', noteObject)
+      .then(response => {
+        setNotes(notes.concat(response.data))
+        setNewNote('')
+      })
   }
 
   const handleNoteChange = (event) => {
@@ -40,21 +43,21 @@ const App = () => {
       <h1>Notes</h1>
       <div>
         <button onClick={() => setShowAll(!showAll)}>
-          show {showAll ? 'important' : 'all' }
+          show {showAll ? 'important' : 'all'}
         </button>
-      </div>      
+      </div>
       <ul>
-        {notesToShow.map(note => 
+        {notesToShow.map(note =>
           <Note key={note.id} note={note} />
         )}
       </ul>
       <form onSubmit={addNote}>
-      <input
+        <input
           value={newNote}
           onChange={handleNoteChange}
         />
         <button type="submit">save</button>
-      </form> 
+      </form>
     </div>
   )
 }
