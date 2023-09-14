@@ -9,7 +9,7 @@ body {
 }
 
 section {
-	padding: 20px;
+	padding: 10px;
 }
 
 
@@ -51,7 +51,13 @@ section {
 
 
 
-/* card */
+.cards {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	gap: 18px;
+	flex: 0 0 auto;
+}
 
 .card {
 	max-width: 176px;
@@ -89,6 +95,7 @@ section {
 		color: #918E9B;
 		padding: 0px;
 		margin-top: 8px;
+		flex-flow: row nowrap;
 
 		&-star {
 			width: 14px;

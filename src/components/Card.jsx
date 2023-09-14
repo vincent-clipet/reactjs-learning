@@ -1,22 +1,22 @@
-export default function Card() {
+export default function Card({ id, title, description, price, coverImg, stats, location, openSpots }) {
 	return (
 		<section className="card">
 			<div className="card-status">
 				<div className="card-status-background">
-					<p className="card-status-text">SOLD OUT</p>
+					<p className="card-status-text">{id}</p>
 				</div>
-				<img className="card-image" src="/src/images/katie-zaferes.png"></img>
+				<img className="card-image" src={`/public/images/${coverImg}`}></img>
 			</div>
 			<section className="card-rating">
-				<img className="card-rating-star" src="/src/images/star.png"></img>
-				<span className="card-rating-rating">5.0</span>
-				<span className="card-rating-votes">&nbsp;(6)</span>
-				<span className="card-rating-separator">&nbsp;-</span>
-				<span className="card-rating-country">&nbsp;USA</span>
+				<img className="card-rating-star" src="/public/images/star.png"></img>
+				<span className="card-rating-rating"> {stats.rating} </span>
+				<span className="card-rating-votes"> ({stats.reviewCount}) </span>
+				<span className="card-rating-separator"> - </span>
+				<span className="card-rating-location"> {location} </span>
 			</section>
-			<p className="card-title">Life lessons with Katie Zaferes</p>
+			<p className="card-title">{title}</p>
 			<p className="card-price">
-				<strong>From $136</strong> / person
+				<strong>From ${price}</strong> / person
 			</p>
 		</section>
 	)
