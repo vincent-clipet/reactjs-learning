@@ -12,6 +12,7 @@ export default function App() {
 
   const [notes, setNotes] = React.useState([])
   const [currentNoteId, setCurrentNoteId] = React.useState("")
+  const [tempNoteText, setTempNoteText] = React.useState("")
 
   const currentNote =
     notes.find(note => note.id === currentNoteId)
@@ -31,11 +32,28 @@ export default function App() {
     return unsubscribe
   }, [])
 
+  // Set currentNoteId if unset
   React.useEffect(() => {
     if (!currentNoteId) {
       setCurrentNoteId(notes[0]?.id)
     }
   }, [notes])
+
+  // Propagate any currentNote change to the Editor
+  React.useEffect(() => {
+    if (currentNote) {
+      setTempNoteText(currentNote.body)
+    }
+  }, [currentNote])
+
+  // Debounce user input in the Editor
+  React.useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (tempNoteText !== currentNote.body)
+        updateNote(tempNoteText)
+    }, 1000)
+    return () => clearTimeout(timeoutId)
+  }, [tempNoteText])
 
 
 
@@ -83,8 +101,8 @@ export default function App() {
               deleteNote={deleteNote}
             />
             <Editor
-              currentNote={currentNote}
-              updateNote={updateNote}
+              tempNoteText={tempNoteText}
+              setTempNoteText={setTempNoteText}
             />
           </Split>
           :
