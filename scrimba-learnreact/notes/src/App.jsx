@@ -14,10 +14,17 @@ import { nanoid } from "nanoid"
  */
 
 export default function App() {
-  const [notes, setNotes] = React.useState([])
-  const [currentNoteId, setCurrentNoteId] = React.useState(
-    (notes[0] && notes[0].id) || ""
+
+  const localStorageLoad = () => JSON.parse(localStorage.getItem("notes")) || []
+
+  const [notes, setNotes] = React.useState(localStorageLoad)
+  const [currentNoteId, setCurrentNoteId] = React.useState((notes[0] && notes[0].id) || "")
+
+  const localStorageSave = React.useEffect(
+    () => localStorage.setItem("notes", JSON.stringify(notes)), [notes]
   )
+
+
 
   function createNewNote() {
     const newNote = {
@@ -41,6 +48,8 @@ export default function App() {
       return note.id === currentNoteId
     }) || notes[0]
   }
+
+
 
   return (
     <main>
