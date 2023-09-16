@@ -2,13 +2,12 @@ import React from "react"
 import Sidebar from "./components/Sidebar"
 import Editor from "./components/Editor"
 import Split from "react-split"
-import { onSnapshot, addDoc } from "firebase/firestore"
-import { notesCollection } from "../Firebase"
-
+import { nanoid } from "nanoid"
+import { onSnapshot, addDoc, doc, deleteDoc } from "firebase/firestore"
+import { notesCollection, db } from "../Firebase"
 export default function App() {
-  const [notes, setNotes] = React.useState(
-    () => JSON.parse(localStorage.getItem("notes")) || []
-  )
+  const [notes, setNotes] = React.useState([])
+
   const [currentNoteId, setCurrentNoteId] = React.useState(
     (notes[0]?.id) || ""
   )
@@ -20,11 +19,11 @@ export default function App() {
   React.useEffect(() => {
     const unsubscribe = onSnapshot(notesCollection, function (snapshot) {
       // Sync up our local notes array with the snapshot data
-      const notesArray = snapshot.docs.map(doc => ({
+      const notesArr = snapshot.docs.map(doc => ({
         ...doc.data(),
         id: doc.id
       }))
-      setNotes(notesArray)
+      setNotes(notesArr)
     })
     return unsubscribe
   }, [])
@@ -33,9 +32,8 @@ export default function App() {
     const newNote = {
       body: "# Type your markdown note's title here"
     }
-    await addDoc(notesCollection, newNote)
-    setNotes(prevNotes => [newNote, ...prevNotes])
-    setCurrentNoteId(newNote.id)
+    const newNoteRef = await addDoc(notesCollection, newNote)
+    setCurrentNoteId(newNoteRef.id)
   }
 
   function updateNote(text) {
@@ -54,9 +52,9 @@ export default function App() {
     })
   }
 
-  function deleteNote(event, noteId) {
-    event.stopPropagation()
-    setNotes(oldNotes => oldNotes.filter(note => note.id !== noteId))
+  async function deleteNote(noteId) {
+    const docRef = doc(db, "notes", noteId)
+    await deleteDoc(docRef)
   }
 
   return (
