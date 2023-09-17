@@ -1,28 +1,43 @@
 import { useState } from 'react'
 import Die from './components/Die'
+import RollButton from './components/RollButton'
 
 
 
 function App() {
 
-  function getRandomDieValue() {
-    return Math.floor(Math.random() * 6) + 1;
+  let idGen = 1
+  const [dies, setDies] = useState(initializeDies())
+
+
+
+  function initializeDies() {
+    const newDies = []
+    for (let i = 0; i < 10; i++) {
+      newDies.push({
+        id: idGen++,
+        value: Math.ceil(Math.random() * 6),
+        isHeld: false
+      })
+    }
+    return newDies
   }
 
-  const dies = [
-    { id: 1, value: getRandomDieValue() },
-    { id: 2, value: getRandomDieValue() },
-    { id: 3, value: getRandomDieValue() },
-    { id: 4, value: getRandomDieValue() },
-    { id: 5, value: getRandomDieValue() },
-    { id: 6, value: getRandomDieValue() },
-    { id: 7, value: getRandomDieValue() },
-    { id: 8, value: getRandomDieValue() },
-    { id: 9, value: getRandomDieValue() },
-    { id: 10, value: getRandomDieValue() }
-  ]
+  function handleReroll(event) {
+    const updatedDies = [...dies]
+    updatedDies.forEach((die) => {
+      die.value = die.isHeld ? die.value : Math.ceil(Math.random() * 6)
+    })
+    setDies(updatedDies)
+  }
 
-
+  function handleHold(event, id) {
+    const updatedDies = [...dies]
+    updatedDies.forEach((die) => {
+      die.isHeld = die.id === id ? !die.isHeld : die.isHeld
+    })
+    setDies(updatedDies)
+  }
 
 
 
@@ -37,10 +52,13 @@ function App() {
                   key={die.id}
                   id={die.id}
                   value={die.value}
+                  isHeld={die.isHeld}
+                  handleHold={handleHold}
                 />
               )
             }
           </section>
+          <RollButton handleReroll={handleReroll} />
         </div>
       </div>
     </main>

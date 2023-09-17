@@ -1,5 +1,6 @@
 * {
   box-sizing: border-box;
+  font-family: 'Karla', sans-serif;
 }
 
 body {
@@ -7,7 +8,6 @@ body {
   width: 511px;
   height: 517px;
   padding: 69px 75px 69px 76px;
-  font-family: Karla;
 }
 
 main {
@@ -32,32 +32,64 @@ main {
   height: 320px;
   padding: 33px 35px 33px 35px;
   justify-content: center; // Horizontal centering
-  align-items: center; // Vertical centering
   flex-shrink: 0;
 }
 
-.game {}
+.game {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly; // V centering
+  align-items: center; // H centering
+  gap: 20px;
 
-.dies {
-  display: grid;
-  grid-template-columns: 40px 40px 40px 40px 40px;
-  grid-gap: 18px;
-  grid-template-rows: 40px 40px;
+  .dies {
+    display: grid;
+    grid-template: auto auto / repeat(5, 1fr);
+    gap: 18px;
 
-  .die {
-    width: 35px;
-    height: 35px;
-    box-shadow: 1px 2px 5px 0px #0B2434;
-    border-radius: 3px;
-    border-color: #0B2434;
-    display: flex;
-    justify-content: center; // Horizontal centering
-    align-items: center; // Vertical centering
-    flex-shrink: 0;
+    .die {
+      width: 35px;
+      height: 35px;
+      box-shadow: 1px 2px 5px 0px #0B2434;
+      border-radius: 3px;
+      border-color: #0B2434;
+      display: flex;
+      justify-content: center; // Horizontal centering
+      align-items: center; // Vertical centering
+      flex-shrink: 0;
 
-    .die-value {
-      font-size: 18px;
-      color: #0B2434;
+      &-value {
+        font-size: 1.5rem;
+        color: #0B2434;
+      }
+    }
+
+    .die-held {
+      background-color: green
+    }
+
+    .die-notheld {
+      background-color: white
     }
   }
+
+  .rollButton {
+    width: 100px;
+    height: 30px;
+    background-color: gold;
+    border-radius: 4px;
+    border: none;
+    color: #0B2434;
+    font-size: 1.1em;
+    cursor: pointer;
+
+    &:hover {
+      border-color: #0B2434;
+    }
+
+    &:active {
+      box-shadow: inset 3px 3px 5px -3px rgba(0, 0, 0, 0.7);
+    }
+  }
+
 }
