@@ -30,7 +30,7 @@ main {
   display: flex; // need Flexbox to center everything easily
   width: 320px;
   height: 320px;
-  padding: 33.28px 34.56px 33.92px 34.56px;
+  padding: 33px 35px 33px 35px;
   justify-content: center; // Horizontal centering
   align-items: center; // Vertical centering
   flex-shrink: 0;
@@ -39,12 +39,10 @@ main {
 .game {}
 
 .dies {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center; // Horizontal centering
-  flex-shrink: 0;
-  gap: 17px;
+  display: grid;
+  grid-template-columns: 40px 40px 40px 40px 40px;
+  grid-gap: 18px;
+  grid-template-rows: 40px 40px;
 
   .die {
     width: 35px;
