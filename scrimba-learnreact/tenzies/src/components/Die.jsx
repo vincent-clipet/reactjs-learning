@@ -1,4 +1,5 @@
 export default function Die({ id, value, isHeld, handleHold }) {
+	console.log("test", id)
 	return (
 		<div
 			className={`die ${isHeld ? 'die-held' : 'die-notheld'}`}

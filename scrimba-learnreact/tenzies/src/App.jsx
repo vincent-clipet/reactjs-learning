@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Die from './components/Die'
 import RollButton from './components/RollButton'
+import Confetti from 'react-confetti'
 
 
 
@@ -8,6 +9,19 @@ function App() {
 
   let idGen = 1
   const [dies, setDies] = useState(initializeDies())
+  const [tenzies, setTenzies] = useState(false)
+
+
+
+  const checkIfGameWon = useEffect(() => {
+    let previousValue = null
+    const allHeld = dies.every(die => die.isHeld)
+    const allSameValue = dies.every(die => die.value === dies[0].value)
+    if (allHeld && allSameValue) {
+      setTenzies(true)
+      console.log("WIN")
+    }
+  }, [dies])
 
 
 
@@ -39,12 +53,19 @@ function App() {
     setDies(updatedDies)
   }
 
+  function handleNewGame(event) {
+    setDies(initializeDies())
+    setTenzies(false)
+  }
+
 
 
   return (
     <main>
       <div className='board'>
         <div className='game'>
+          <h1 className="title">Tenzies</h1>
+          <p className="instructions">Roll until all dice are the same. Click each die to freeze it at its current value between rolls.</p>
           <section className='dies'>
             {
               dies.map((die) =>
@@ -58,7 +79,12 @@ function App() {
               )
             }
           </section>
-          <RollButton handleReroll={handleReroll} />
+          <RollButton
+            handleReroll={handleReroll}
+            handleNewGame={handleNewGame}
+            tenzies={tenzies}
+          />
+          {tenzies && <Confetti />}
         </div>
       </div>
     </main>

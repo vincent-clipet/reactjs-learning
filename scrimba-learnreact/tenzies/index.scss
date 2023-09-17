@@ -32,6 +32,7 @@ main {
   height: 320px;
   padding: 33px 35px 33px 35px;
   justify-content: center; // Horizontal centering
+  align-items: stretch; // H centering
   flex-shrink: 0;
 }
 
@@ -41,6 +42,10 @@ main {
   justify-content: space-evenly; // V centering
   align-items: center; // H centering
   gap: 20px;
+
+  &>* {
+    margin: 0;
+  }
 
   .dies {
     display: grid;
@@ -65,7 +70,7 @@ main {
     }
 
     .die-held {
-      background-color: green
+      background-color: rgb(77, 252, 83)
     }
 
     .die-notheld {
@@ -90,6 +95,10 @@ main {
     &:active {
       box-shadow: inset 3px 3px 5px -3px rgba(0, 0, 0, 0.7);
     }
+  }
+
+  .newgame {
+    background-color: red;
   }
 
 }
