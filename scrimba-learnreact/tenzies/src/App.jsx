@@ -13,8 +13,7 @@ function App() {
 
 
 
-  const checkIfGameWon = useEffect(() => {
-    let previousValue = null
+  useEffect(() => {
     const allHeld = dies.every(die => die.isHeld)
     const allSameValue = dies.every(die => die.value === dies[0].value)
     if (allHeld && allSameValue) {
@@ -37,7 +36,7 @@ function App() {
     return newDies
   }
 
-  function handleReroll(event) {
+  function handleReroll() {
     const updatedDies = [...dies]
     updatedDies.forEach((die) => {
       die.value = die.isHeld ? die.value : Math.ceil(Math.random() * 6)
@@ -45,7 +44,7 @@ function App() {
     setDies(updatedDies)
   }
 
-  function handleHold(event, id) {
+  function handleHold(id) {
     const updatedDies = [...dies]
     updatedDies.forEach((die) => {
       die.isHeld = die.id === id ? !die.isHeld : die.isHeld
@@ -53,7 +52,7 @@ function App() {
     setDies(updatedDies)
   }
 
-  function handleNewGame(event) {
+  function handleNewGame() {
     setDies(initializeDies())
     setTenzies(false)
   }
